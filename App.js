@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image } from 'react-native';
+import { Text, View, TextInput, Button, StyleSheet, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 function Home() {
   return (
     <View style={styles.centeredView}>
-      <Text style={styles.homeText}>Sales Off 🛒💰</Text>
+      <Text style={styles.homeText}>Welcome</Text>
       <Image
         source={require('./assets/home.jpg')}
         style={styles.homeImage}
@@ -62,7 +63,7 @@ function MyTabs() {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      activeColor="orange"
+      activeColor="black"
       inactiveColor="gray"
       labeled={false}
       barStyle={styles.tabBar}
@@ -113,6 +114,40 @@ function MyTabs() {
         }}
       />
     </Tab.Navigator>
+  );
+}
+
+function LoginScreen({ navigation }) {
+  return (
+    <View style={styles.centeredView}>
+      <Text style={styles.loginTitle}>Login</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Username"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        secureTextEntry
+      />
+      <Button
+        title="Login"
+        onPress={() => navigation.replace('Main')}
+      />
+    </View>
+  );
+}
+
+const Stack = createStackNavigator();
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Main" component={MyTabs} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -169,14 +204,21 @@ const styles = StyleSheet.create({
     color: 'grey',
   },
   tabBar: {
-    backgroundColor: '#f8f9fa', 
+    backgroundColor: '#f8f9fa', // Lighter color for the tab bar
+  },
+  loginTitle: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  input: {
+    width: '80%',
+    padding: 10,
+    marginVertical: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5,
   },
 });
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <MyTabs />
-    </NavigationContainer>
-  );
-}
+export default App;
